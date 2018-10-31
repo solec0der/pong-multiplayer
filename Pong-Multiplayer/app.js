@@ -69,6 +69,9 @@ io.on('connection', function (socket) {
                     height: games[newId].height
                 }
 
+                socket.gameId = newId;
+                player2Socket.gameId = newId;
+
                 player2Socket.join(newId);
                 player2Socket.emit('start', gameData);
                 socket.join(newId);
@@ -83,18 +86,33 @@ io.on('connection', function (socket) {
     socket.on('move', function (data) {
         var game = games[data.gameId];
 
-        if (data.playerId == game.getPlayer1ID()) {
-            game.move(1, data.mouseY);
-        } else if (data.playerId == game.getPlayer2ID()) {
-            game.move(2, data.mouseY);
+        if(game) {
+            if (data.playerId == game.getPlayer1ID()) {
+                game.move(1, data.mouseY);
+            } else if (data.playerId == game.getPlayer2ID()) {
+                game.move(2, data.mouseY);
+            }
         }
     });
 
     socket.on('disconnect', function () {
+        var data = {
+            type: "END"
+        }
+
+        io.to(socket.gameId).emit('notify', data);
+        delete games[socket.gameId];
         playersWaiting.splice(playersWaiting.indexOf(socket.id));
     });
 
     socket.on('reconnect', function () {
+        var data = {
+            type: "END"
+        }
+        
+        io.to(socket.gameId).emit('notify', data);
+        delete games[socket.gameId];
+
         playersWaiting.splice(playersWaiting.indexOf(socket.id));
     });
 });
@@ -109,7 +127,7 @@ function update() {
             paddlePos: game.getPlayerPositions()
         }
 
-        io.to(key).emit('update', data);
+        io.to(key).volatile.emit('update', data);
     });
 }
 

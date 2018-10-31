@@ -11,7 +11,7 @@ var ballY;
 var paddle1Y;
 var paddle2Y;
 
-window.onload = function() {
+window.onload = function () {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
 }
@@ -22,12 +22,12 @@ function joinGame() {
 
     var data = {
         id: socket.id,
-        width: screen.width*0.5,
-        height: screen.height*0.5
+        width: screen.width * 0.5,
+        height: screen.height * 0.5
     }
 
     socket.emit('join', data, function (data) {
-        if(data.gameFound) {
+        if (data.gameFound) {
             gameId = data.gameId;
             ctx.canvas.width = data.width;
             ctx.canvas.height = data.height;
@@ -50,13 +50,31 @@ function joinGame() {
 
         draw();
     })
+
+    socket.on('notify', function (data) {
+        switch (data.type) {
+            case "END":
+                endGame();
+                joinGame();
+                break;
+        }
+    });
 }
 
 function gameStart() {
-    window.onmousemove = function(evt) {
+    window.onmousemove = function (evt) {
         move(getMouseY(canvas, evt));
     }
 
+}
+
+function endGame() {
+    gameId = "";
+    ballX = 0;
+    ballY = 0;
+    paddle1Y = 0;
+    paddle2Y = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function getMouseY(canvas, evt) {
@@ -68,7 +86,7 @@ function draw() {
     rect(0, 0, canvas.width, canvas.height, "black");
     rect(ballX, ballY, 10, 10, "white");
     rect(0, paddle1Y, 10, 100, "white");
-    rect(canvas.width-10, paddle2Y, 10, 100, "white");
+    rect(canvas.width - 10, paddle2Y, 10, 100, "white");
 }
 
 function move(mouseY) {
@@ -81,6 +99,6 @@ function move(mouseY) {
 }
 
 function rect(x, y, w, h, color) {
-     ctx.fillStyle = color;
-     ctx.fillRect(x, y, w, h);
- }
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+}
