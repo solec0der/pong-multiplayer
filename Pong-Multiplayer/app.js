@@ -84,9 +84,9 @@ io.on('connection', function (socket) {
         var game = games[data.gameId];
 
         if (data.playerId == game.getPlayer1ID()) {
-            game.move(1, data.direction);
+            game.move(1, data.mouseY);
         } else if (data.playerId == game.getPlayer2ID()) {
-            game.move(2, data.direction);
+            game.move(2, data.mouseY);
         }
     });
 
@@ -114,5 +114,5 @@ function update() {
 }
 
 https.listen(8080, function () {
-    setInterval(update, 1000 / 30);
+    setInterval(update, 1000 / 60);
 });

@@ -3,9 +3,9 @@
   <head>
     <title>Pong Multiplayer</title>
     <script src="/socket.io/socket.io.js"></script> 
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/main.js"></script>
-    <link rel="stylesheet" src="css/style.css"> 
+    <link rel="stylesheet" href="/css/style.css" type="text/css"> 
 <script>
 </script>
 </head>
@@ -13,7 +13,7 @@
 	<div class="background">
 		<p class="heading">Pong-Multiplayer</p>
         <button onclick="joinGame();">Join Game</button>
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <canvas class="gameCanvas" id="gameCanvas" width="800" height="600"></canvas>
 	</div>	
   </body>
 </html>

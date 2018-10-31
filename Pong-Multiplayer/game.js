@@ -5,16 +5,16 @@ class Game {
 		this.height = height;
 		this.gameId = gameId;
 
-        this.BALL_RADIUS = 10;
+		this.BALL_RADIUS = 10;
 
 		this.ballX = width / 2 - this.BALL_RADIUS / 2;
 		this.ballY = height / 2 - this.BALL_RADIUS / 2;
 
-		this.ballXSpeed = 5;
-		this.ballYSpeed = 5;
+		this.ballXSpeed = 2.5;
+		this.ballYSpeed = 2.5;
 
-        this.PADDLE_WIDTH = 10;
-        this.PADDLE_HEIGHT = 100;
+		this.PADDLE_WIDTH = 10;
+		this.PADDLE_HEIGHT = 100;
 
 		this.paddle1Y = height / 2 - this.PADDLE_HEIGHT / 2;
 		this.paddle2Y = height / 2 - this.PADDLE_HEIGHT / 2;
@@ -40,9 +40,9 @@ class Game {
 			this.ballYSpeed = -this.ballYSpeed;
 		}
 
-		if(this.ballX > this.width - this.PADDLE_WIDTH && (this.ballY > this.paddle2Y && this.ballY < this.paddle2Y + this.PADDLE_HEIGHT)) {
+		if (this.ballX > this.width - this.PADDLE_WIDTH && (this.ballY > this.paddle2Y && this.ballY < this.paddle2Y + this.PADDLE_HEIGHT)) {
 			this.ballXSpeed = -this.ballXSpeed;
-		} else if(this.ballX < this.PADDLE_WIDTH && (this.ballY > this.paddle1Y && this.ballY < this.paddle1Y + this.PADDLE_HEIGHT)) {
+		} else if (this.ballX < this.PADDLE_WIDTH && (this.ballY > this.paddle1Y && this.ballY < this.paddle1Y + this.PADDLE_HEIGHT)) {
 			this.ballXSpeed = -this.ballXSpeed;
 		}
 	}
@@ -65,22 +65,22 @@ class Game {
 			player1: this.paddle1Y,
 			player2: this.paddle2Y
 		}
-    }
-	
+	}
+
 	/**
 	 * Returns the first players id.
 	 */
-    getPlayer1ID() {
-        return this.idPlayer1;
-    }
+	getPlayer1ID() {
+		return this.idPlayer1;
+	}
 
 	/**
 	 * Returns the second players id.
 	 */
-    getPlayer2ID() {
-        return this.idPlayer2;
-    }
-	
+	getPlayer2ID() {
+		return this.idPlayer2;
+	}
+
 	/**
 	 * Resets the ball and paddle positions.
 	 */
@@ -92,27 +92,24 @@ class Game {
 		this.paddle2Y = this.height / 2 - this.PADDLE_HEIGHT / 2;
 	}
 
-	move(player, dir) {
+	move(player, mouseY) {
+		var mouseY = mouseY - this.PADDLE_HEIGHT / 2;
+
 		if (player == 1) {
-			switch (dir) {
-				case "UP":
-					this.paddle1Y -= 20;
-					break;
-				case "DOWN":
-					this.paddle1Y += 20;
-                    break;
-                default:
+			if(mouseY > this.height - this.PADDLE_HEIGHT) {
+				this.paddle1Y = this.height - this.PADDLE_HEIGHT;
+			} else if(mouseY < 0) {
+				this.paddle1Y = 0;
+			} else {
+				this.paddle1Y = mouseY;
 			}
-		} else if (player == 2) {
-			switch (dir) {
-				case "UP":
-					this.paddle2Y -= 20;
-					break;
-				case "DOWN":
-					this.paddle2Y += 20;
-                    break;
-                default:
-                    
+		} else if(player == 2) {
+			if(mouseY > this.height - this.PADDLE_HEIGHT) {
+				this.paddle2Y = this.height - this.PADDLE_HEIGHT;
+			} else if(mouseY < 0) {
+				this.paddle2Y = 0;
+			} else {
+				this.paddle2Y = mouseY;
 			}
 		}
 	}
