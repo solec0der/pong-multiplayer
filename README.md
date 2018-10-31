@@ -28,8 +28,6 @@ To run the application, run the following command.
 $ node app.js
 ```
 
-```
-
 ## Built With
 
 * [VSCode](https://code.visualstudio.com/) - The text editor we've used.
